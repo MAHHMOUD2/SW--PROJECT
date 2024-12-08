@@ -1,0 +1,11 @@
+import { Repository } from 'typeorm';
+import { Course } from '../models/courses.schema';
+export declare class CoursesService {
+    private readonly courseRepository;
+    constructor(courseRepository: Repository<Course>);
+    createCourse(courseData: Partial<Course>): Promise<Course>;
+    getAllCourses(): Promise<Course[]>;
+    getCourseById(courseId: string): Promise<Course>;
+    updateCourse(courseId: string, courseData: Partial<Course>): Promise<Course>;
+    deleteCourse(courseId: string): Promise<void>;
+}
