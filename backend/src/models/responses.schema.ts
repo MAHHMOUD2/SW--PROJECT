@@ -1,6 +1,6 @@
 import { schema, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
-import { Quiz } from './quizzes.schema';
-import { User } from './users.schema';
+import { Quiz } from '../quizes/quizzes.schema';
+import { User } from '../users/users.Schema';
 
 @schema()
 export class Response {

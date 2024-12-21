@@ -1,26 +1,38 @@
-import { schema, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Quiz } from './quizzes.schema';
+import { schema, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Response } from './responses.schema';
+import { Progress } from './progress.schema';
 import { Course } from './courses.schema';
 
 @schema()
-export class Module {
-  
+export class User {
+ 
+  @Column()
+  name: string;
+
+  @Column({ unique: true })
+  email: string;
 
   @Column()
-  title: string;
+  passwordHash: string;
 
-  @Column('text')
-  content: string;
+  @Column()
+  role: string;
 
-  @Column('simple-array', { nullable: true })
-  resources: string[];
-
-  @ManyToOne(() => Course, (course) => course.modules)
-  course: Course;
+  @Column({ nullable: true })
+  pictureUrl: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => Quiz, (quiz) => quiz.module)
-  quizzes: Quiz[];
+  @OneToMany(() => Response, (response) => response.user)
+  responses: Response[];
+
+  @OneToMany(() => Progress, (progress) => progress.user)
+  progressRecords: Progress[];
+
+  @OneToMany(() => Course, (course) => course.createdBy)
+  createdCourses: Course[];
+
+  @OneToMany(() => Note, (note) => note.createdBy)
+  notes: Note[];
 }

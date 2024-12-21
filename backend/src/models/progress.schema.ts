@@ -1,5 +1,5 @@
 import { schema, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './users.Schema';
+import { User } from '../users/users.Schema';
 import { Course } from './courses.schema';
 
 @schema()

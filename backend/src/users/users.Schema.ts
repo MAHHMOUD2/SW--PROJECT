@@ -1,10 +1,11 @@
 import { schema, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
-import { Response } from './responses.schema';
-import { Progress } from './progress.schema';
+import { Response } from '../models/responses.schema';
+import { Progress } from '../models/progress.schema';
 import { Course } from './courses.schema';
 
 @schema()
 export class User {
+  /**chat forms progress  */
  
   @Column()
   name: string;
