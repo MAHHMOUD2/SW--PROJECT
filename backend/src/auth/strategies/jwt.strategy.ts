@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       id: user._id,
       email: user.email,
-      roles: user.roles || ['student'], // Default role if none specified
+      roles: user.role || ['student'], // Default role if none specified
       firstName: user.firstName,
       lastName: user.lastName,
     };
