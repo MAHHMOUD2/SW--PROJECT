@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoursesService } from './courses.service';
 import { CoursesController } from './courses.controller';
-import { Course } from '../schema/courses.schema';  // Import Course entity
-import { User } from '../schema/users.schema';  // Import User entity
-import { Module as CourseModule } from '../schema/modules.schema';  // Import Module entity
+import { Course } from './courses.schema';
+import { User } from '../users/users.schema';
+import { Module as ModuleEntity } from './modules.schema';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Course, User, CourseModule]),  // Register entities with TypeORM
+    TypeOrmModule.forFeature([Course, User, ModuleEntity]),
   ],
-  providers: [CoursesService],  // Register the CoursesService to be injectable
-  controllers: [CoursesController],  // Register the CoursesController to handle routes
-  exports: [CoursesService],  // Export the CoursesService if you need to inject it elsewhere
+  providers: [CoursesService],
+  controllers: [CoursesController],
+  exports: [CoursesService],
 })
 export class CoursesModule {}

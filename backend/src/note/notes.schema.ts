@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
-import { User } from '../models/users.schema'; // Reference the existing User schema
+import { User } from '../users/users.schema'; // Reference the existing User schema
 
 @Entity()
 export class Note {

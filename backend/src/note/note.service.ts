@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Note } from './note.schema';
+import { Note } from './notes.schema';
 import { CreateNoteDto } from './createnote.dto';
 import { UpdateNoteDto } from './updatenote.dto';
 
@@ -22,7 +22,10 @@ export class NoteService {
   }
 
   async findOne(id: number): Promise<Note> {
-    const note = await this.noteRepository.findOne(id, { relations: ['createdBy'] });
+    const note = await this.noteRepository.findOne({
+      where: { id },
+      relations: ['createdBy']
+    });
     if (!note) {
       throw new NotFoundException('Note not found');
     }

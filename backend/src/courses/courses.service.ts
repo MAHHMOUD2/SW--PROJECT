@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Course } from '../schema/courses.schema'; 
-import { User } from '../schema/users.schema';     
-import { Module } from '../schema/modules.schema'; 
+import { Course } from './courses.schema'; 
+import { User } from '../users/users.schema';     
+import { Module } from './modules.schema'; 
 
 @Injectable()
 export class CoursesService {

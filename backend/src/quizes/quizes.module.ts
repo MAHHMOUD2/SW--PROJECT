@@ -1,27 +1,27 @@
-import { Schema, Document } from 'mongoose';
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { QuizController } from './quizes.controller';
+import { QuizService } from './quizes.service';
+import { Quiz, QuizSchema } from './schemas/quiz.schema';
+import { Question, QuestionSchema } from './schemas/question.schema';
+import { Module as CourseModule, ModuleSchema } from './schemas/module.schema';
+import { UserPerformance, UserPerformanceSchema } from './schemas/user-performance.schema';
+import { User, UserSchema } from '../users/user.schema';
+import { ConfigModule } from '@nestjs/config';
 
-export const QuestionSchema = new Schema({
-  question: { type: String, required: true },
-  options: [{ type: String, required: true }],
-  correctAnswer: { type: String, required: true },
-  difficulty: { type: Number, required: true, enum: [1, 2, 3] }, // 1: Easy, 2: Medium, 3: Hard
-});
-
-export const QuizSchema = new Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  questions: [QuestionSchema],
-});
-
-export interface Question extends Document {
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  difficulty: number; // 1 for easy, 3 for hard
-}
-
-export interface Quiz extends Document {
-  title: string;
-  description: string;
-  questions: Question[];
-}
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      { name: Quiz.name, schema: QuizSchema },
+      { name: Question.name, schema: QuestionSchema },
+      { name: CourseModule.name, schema: ModuleSchema },
+      { name: UserPerformance.name, schema: UserPerformanceSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
+    ConfigModule,
+  ],
+  controllers: [QuizController],
+  providers: [QuizService],
+  exports: [QuizService],
+})
+export class QuizesModule {}

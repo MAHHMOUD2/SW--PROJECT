@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-import {Controller,Get,Post,Put,Delete,Body,Param,Request,UseGuards,} from '@nestjs/common';
-  
-  
-  @Controller('users')
-  export class UsersController {
 
-   
-
-=======
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from '../models/users.schema';
+import { User } from './user.schema';
 
 @Controller('users')
 export class UsersController {
@@ -19,12 +10,11 @@ export class UsersController {
   @Get()
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
->>>>>>> 4ebe373b1eb818a75ee7721ea19842862997d22e
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.findOneById(id);
+    return this.usersService.findById(id);
   }
 
   @Post()
@@ -45,5 +35,3 @@ export class UsersController {
     return this.usersService.delete(id);
   }
 }
-
-  

@@ -1,36 +1,39 @@
-import { schema, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 import { Response } from '../models/responses.schema';
 import { Progress } from '../models/progress.schema';
-import { Course } from './courses.schema';
+import { Course } from '../courses/courses.schema';
 
-@schema()
-export class User {
+@Schema()
+export class User extends Document {
   /**chat forms progress  */
  
-  @Column()
+  @Prop()
   name: string;
 
-  @Column({ unique: true })
+  @Prop({ unique: true })
   email: string;
 
-  @Column()
+  @Prop()
   passwordHash: string;
 
-  @Column()
+  @Prop()
   role: string;
 
-  @Column({ nullable: true })
+  @Prop({ nullable: true })
   pictureUrl: string;
 
-  @CreateDateColumn()
+  @Prop()
   createdAt: Date;
 
-  @OneToMany(() => Response, (response) => response.user)
+  @Prop({ type: [{ type: 'ObjectId', ref: 'Response' }] })
   responses: Response[];
 
-  @OneToMany(() => Progress, (progress) => progress.user)
+  @Prop({ type: [{ type: 'ObjectId', ref: 'Progress' }] })
   progressRecords: Progress[];
 
-  @OneToMany(() => Course, (course) => course.createdBy)
+  @Prop({ type: [{ type: 'ObjectId', ref: 'Course' }] })
   createdCourses: Course[];
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
