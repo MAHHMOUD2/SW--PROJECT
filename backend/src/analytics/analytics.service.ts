@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../users/user.schema';
-import { Course } from '../courses/course.schema';
-import { Quiz } from '../quizes/quiz.schema';
-import { UserPerformance } from '../quizes/user-performance.schema';
+import { Course } from '../courses/courses.schema';
+import { Quiz } from '../quizes/quizzes.schema';
+import { UserPerformance } from '../quizes/schemas/user-performance.schema';
 
 @Injectable()
 export class AnalyticsService {
@@ -19,21 +19,25 @@ export class AnalyticsService {
   async getStudentDashboard(userId: string) {
     const enrolledCourses = await this.courseModel
       .find({ enrolledStudents: userId })
-      .select('title progress')
+      .select('title progressRecords')
+      .populate({
+        path: 'progressRecords',
+        match: { userId: userId }
+      })
       .exec();
-
-    const quizPerformance = await this.userPerformanceModel
-      .find({ userId })
-      .populate('moduleId', 'title')
-      .exec();
-
-    const averageScore = quizPerformance.reduce((acc, curr) => acc + curr.performanceScore, 0) / quizPerformance.length;
-
+  
+    // Calculate progress manually
+    const coursesWithProgress = enrolledCourses.map(course => ({
+      ...course.toObject(),
+      progress: course.progressRecords && course.progressRecords.length > 0 
+        ? course.progressRecords[0].completionPercentage 
+        : 0
+    }));
+  
     return {
-      enrolledCourses,
-      completedCourses: enrolledCourses.filter(c => c.progress === 100),
-      quizPerformance,
-      averageScore,
+      enrolledCourses: coursesWithProgress,
+      completedCourses: coursesWithProgress.filter(c => c.progress === 100),
+     
     };
   }
 
